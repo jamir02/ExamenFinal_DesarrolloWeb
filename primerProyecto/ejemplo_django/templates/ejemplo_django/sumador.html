@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>React ejempklo</title>
+        <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="text/babel">
+            function App(){
+                const [state,setState] = React.useState({
+                    numero1 : 1,
+                    numero2 : 1,
+                    puntuacion:0,
+                    respuesta:"",
+                })
+
+                function inputKeyPress(event)
+                {
+                    if(event.key === "Enter")
+                    {
+                        const resultado = parseInt(state.respuesta)
+                        if(resultado === state.numero1 + state.numero2)
+                        {
+                            setState({
+                                ...state,
+                                numero1:Math.ceil(Math.random()*10),
+                                numero2:Math.ceil(Math.random()*10),
+                                puntuacion: state.puntuacion + 1
+                            })
+                        }
+                    }
+                }
+
+                function actualizarRespuesta(event)
+                {
+                    setState({
+                        ...state,
+                        respuesta:event.target.value
+                    })
+                }
+
+                function problema()
+                {
+                    return(
+                        <div>
+                            <div>
+                                {state.numero1} + {state.numero2}
+                            </div>
+                            <input onKeyPress={inputKeyPress} onChange={actualizarRespuesta}/>
+                            <div>Puntuacion : {state.puntuacion}</div>
+                        </div>
+                    );
+                }
+                return problema()
+            }
+            ReactDOM.render(<App/>,document.getElementById('app'))
+        </script>
+    </body>
+</html>
