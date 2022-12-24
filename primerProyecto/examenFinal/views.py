@@ -43,8 +43,17 @@ def crear_tarea(request):
     if request.method == 'POST':
         datos = json.load(request) #Recepciono los datos en formato JSON
         arregloTarea = datos.get('TareaCapturada') # Obtengo el arreglo
-        tareasExamen(fechaCreacion = arregloTarea[0], fechaEntrega = arregloTarea[1], descripcion = arregloTarea[2], estadoTarea = arregloTarea[3]).save()
+        tareasExamen(fechaCreacion = arregloTarea[0], fechaEntrega = arregloTarea[1], descripcion = arregloTarea[2], estadoTarea = arregloTarea[3]).save() # lo guardo en la base de datos
         print(arregloTarea)
         return JsonResponse({
             'resp':'ok'
         })
+def eliminar_tarea(request):
+    idtarea = str(request.GET.get('tarea')) #obtengo el id de la tarea
+    Tarea_eliminar = tareasExamen.objects.get(id=idtarea) #Obtengo la info de la tarea seleccionada
+    Tarea_eliminar.delete()# Elimino la tarea de la base de datos
+    return JsonResponse({
+            'resp':'ok'
+        })
+
+

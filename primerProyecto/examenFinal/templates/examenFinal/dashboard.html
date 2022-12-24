@@ -159,6 +159,14 @@
            function eliminarTarea(id_tarea)
            {
             console.log(id_tarea)
+            fetch(`http://127.0.0.1:8000/examenFinal/eliminar_tarea?tarea=${id_tarea}`) // Capturo el id de la tarea a eliminar
+            .then(response => response.json()) // decodificamos el dato en tipo json
+            .then(data =>{
+                //cuerpoTabla.innerHTML = ''// Para eliminar datos anteriores (limpiar tabla)
+                console.log(data) //lo imprimimos en consola
+                window.location.assign('/examenFinal/dashboard') //regreso a la ventana de dashboard
+            })
+
            }
 
            //PREGUNTA 2-3
@@ -212,8 +220,8 @@
                     <td>{{ tarea.fechaEntrega }}</td>
                     <td>{{ tarea.estadoTarea }}</td>
                     <td style="text-align: center;"><a id="{{ tarea.id }}" class="btn btn-info" style="color: black;" data-bs-toggle="modal" data-bs-target="#verDetalle" onclick="mostrarDetalle(this.id)"><i class="fa fa-eye"></i></a></td>
-                    <td style="text-align: center;"><a id="editar{{ tarea.id }}" class="btn btn-warning" style="color: black;" data-bs-toggle="modal" data-bs-target="#editarTarea" onclick="editarTarea(this.id)"><i class="fa fa-edit"></i></a></td>
-                    <td style="text-align: center;"><a id="eliminar{{ tarea.id }}" class="btn btn-danger" style="color: white;" onclick="eliminarTarea(this.id)"><i class="fa fa-trash"></i></a></td>
+                    <td style="text-align: center;"><a id="{{ tarea.id }}" class="btn btn-warning" style="color: black;" data-bs-toggle="modal" data-bs-target="#editarTarea" onclick="editarTarea(this.id)"><i class="fa fa-edit"></i></a></td>
+                    <td style="text-align: center;"><a id="{{ tarea.id }}" class="btn btn-danger" style="color: white;" onclick="eliminarTarea(this.id)"><i class="fa fa-trash"></i></a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
