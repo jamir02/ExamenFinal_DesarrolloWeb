@@ -81,10 +81,55 @@
             console.log('Crear nueva tarea')
             //Escribir su codigo aqui
 
+            // Capturamos los inputs cuando el usuario intenta crear una nueva tarea
+            let fechacreacionid = document.getElementById('fechacreacionid')
+            let fechaentregaid = document.getElementById('fechaentregaid')
+            let descripcionid = document.getElementById('descripcionid')
+            let estadotareaid = document.getElementById('estadotareaid')
+            // Lo guardamos en un arreglo
+            let arregloTarea = [fechacreacionid.value, fechaentregaid.value, descripcionid.value, estadotareaid.value]
+            url = '/examenFinal/crear_tarea'
+            infoTarea= {
+                'TareaCapturada': arregloTarea
+            }
+            fetch(url, {
+                method:"POST",
+                headers:{
+                    "X-Request-With": "XMLHttpRequest",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+                body:JSON.stringify(infoTarea) // Se envian al servidor los datos obtenidos
+            })
+            .then(response => response.json()) // esperamos una respuesta
+            .then(data =>{
+                console.log(data)
+                window.location.assign('/examenFinal/dashboard')
+            })
+
             //Fin del codigo
             $(".modal-backdrop").remove();
             $('#nuevaTarea').hide()
            }
+
+
+           function getCookie(name)
+            {
+                let cookieValue = null;
+                if(document.cookie && document.cookie !== "")
+                {
+                    const cookies = document.cookie.split(";")
+                    for(let i=0;i < cookies.length; i++)
+                    {
+                        const cookie = cookies[i].trim();
+                        if((cookie.substring(0,name.length + 1 )) === (name + '='))
+                        {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
 
            /*
            Capturar los input de la ventana modal para nuevaTarea y eliminar el valor al interior de 
@@ -92,7 +137,15 @@
            */
            function eliminarNuevo()
            {
-
+            let fechacreacionid = document.getElementById('fechacreacionid')
+            let fechaentregaid = document.getElementById('fechaentregaid')
+            let descripcionid = document.getElementById('descripcionid')
+            let estadotareaid = document.getElementById('estadotareaid')
+            
+            fechacreacionid.value= '' //Para eliminar datos anteriores 
+            fechaentregaid.value = '' //Para eliminar datos anteriores 
+            descripcionid.value = '' //Para eliminar datos anteriores 
+            estadotareaid.value = '' //Para eliminar datos anteriores 
            }
 
            //PREGUNTA 2-2
@@ -176,6 +229,7 @@
     Para esta actividad la tarea tiene Fecha de creacion, Fecha de entrega, Estado de tarea y Descripcion
     Recordar eliminar la informacion al interior de los input cuando la tarea haya sido guardada.
 -->
+
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" id="nuevaTarea">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -184,6 +238,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="eliminarNuevo()"></button>
             </div>
             <div class="modal-body">
+                
+                    <div>
+                        <label class="form-label">Fecha de Creación (DD-MM-AAAA)</label>
+                        <input class="form-control" id="fechacreacionid">
+                    </div>
+                    <div>
+                        <label class="form-label">Fecha de Entrega (DD-MM-AAAA)</label>
+                        <input class="form-control" id="fechaentregaid">
+                    </div>
+                    <div>
+                        <label class="form-label"> Descripción</label>
+                        <input class="form-control" id="descripcionid">
+                    </div>
+                    <div>
+                        <label class="form-label">Estado de la tarea</label>
+                        <input class="form-control" id="estadotareaid">
+                    </div>
+            
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="eliminarNuevo()">Cancelar</button>
