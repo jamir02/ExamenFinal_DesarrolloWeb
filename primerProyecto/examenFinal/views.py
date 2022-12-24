@@ -56,4 +56,12 @@ def eliminar_tarea(request):
             'resp':'ok'
         })
 
+def editar_tarea(request):
+    datoTarea = str(request.GET.get('tarea')) #obtengo el identificador
+    infoTarea = tareasExamen.objects.get(id=datoTarea) #obtengo la info de la tarea seleccionada
+    arregloTarea = [infoTarea.fechaCreacion, infoTarea.fechaEntrega, infoTarea.descripcion, infoTarea.estadoTarea] #coloco la información en un arreglo
+    print(datoTarea)
 
+    return JsonResponse({
+        'dato': arregloTarea, # paso los datos de la tarea seleccionada a la parte front
+    })

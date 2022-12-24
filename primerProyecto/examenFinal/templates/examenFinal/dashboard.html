@@ -184,6 +184,23 @@
             console.log(id_tarea)
             //El codigo inicia aqui
 
+            fetch(`http://127.0.0.1:8000/examenFinal/obtener_info_tarea?tarea=${id_tarea}`) // Capturo la información de la tarea 
+            .then(response => response.json()) // decodificamos el dato en tipo json
+            .then(data =>{
+                console.log(data) //lo imprimimos en consola
+                let cuerpoTabla = document.getElementById('cuerpoTabla1') 
+                let datosTabla = ['Fecha de Creación', 'Fecha de Entrega', 'Descripción', 'Estado de la tarea'] // Tipos de caracteristicas de la tarea
+                cuerpoTabla.innerHTML = ''// Para eliminar datos anteriores (limpiar tabla)
+                for (let i=0; i<data.dato.length;i++){ // imprimo todos las caracteristicas de la tarea 
+                     cuerpoTabla.innerHTML += `
+                    <tr>
+                        <td>${datosTabla[i]}</td>
+                        <td><input type="text" placeholder = "${data.dato[i]}" />
+                        </td> 
+                    </tr>
+                     `
+                }
+            })
             //Fin del codigo
            }
 
@@ -290,6 +307,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <table class="table table-bordered" id="infoTarea1">
+                    <thead class="table-dark">
+                        <th>Característica</th>
+                        <th>Valor</th>
+                    </thead>
+                    <tbody id="cuerpoTabla1">
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
